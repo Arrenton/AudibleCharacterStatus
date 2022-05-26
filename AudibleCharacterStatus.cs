@@ -1,0 +1,87 @@
+﻿using AudibleCharacterStatus.Attributes;
+using AudibleCharacterStatus.Windows;
+using Dalamud.Game;
+using Dalamud.Game.ClientState;
+using Dalamud.Game.Command;
+using Dalamud.Interface.Windowing;
+using Dalamud.Plugin;
+using System;
+
+namespace AudibleCharacterStatus
+{
+    public class AudibleCharacterStatus : IDalamudPlugin
+    {
+        private readonly DalamudPluginInterface pluginInterface;
+
+        private readonly PluginCommandManager<AudibleCharacterStatus> commandManager;
+        private readonly WindowSystem windowSystem;
+
+        public string Name => "Audible Character Status";
+
+        public AudibleCharacterStatus(
+            DalamudPluginInterface pi,
+            CommandManager commands,
+            Framework framework,
+            ClientState clientState)
+        {
+            this.pluginInterface = pi;
+            Service.ClientState = clientState;
+            Service.Framework = framework;
+            
+
+            // Get or create a configuration object
+            Service.Config = (Configuration)this.pluginInterface.GetPluginConfig()
+                          ?? this.pluginInterface.Create<Configuration>();
+
+            // Initialize the UI
+            this.windowSystem = new WindowSystem(typeof(AudibleCharacterStatus).AssemblyQualifiedName);
+
+            var window = this.pluginInterface.Create<PluginConfiguriation>();
+            if (window is not null)
+            {
+                this.windowSystem.AddWindow(window);
+            }
+            
+            this.pluginInterface.UiBuilder.OpenConfigUi += ToggleConfigWindow;
+            this.pluginInterface.UiBuilder.Draw += this.windowSystem.Draw;
+            this.pluginInterface.UiBuilder.Draw += SoundController.Update;
+
+            // Load all of our commands
+            this.commandManager = new PluginCommandManager<AudibleCharacterStatus>(this, commands);
+        }
+
+        [Command("/pacs")]
+        [HelpMessage("Configuration Window Toggle")]
+        public void ConfigCommand(string command, string args)
+        {
+            ToggleConfigWindow();
+        }
+
+        private void ToggleConfigWindow()
+        {
+            var configWindow = this.windowSystem.GetWindow("Audible Character Status Configuration");
+            configWindow.IsOpen = !configWindow.IsOpen;
+        }
+
+        #region IDisposable Support
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+
+            this.commandManager.Dispose();
+
+            this.pluginInterface.SavePluginConfig(Service.Config);
+
+            this.pluginInterface.UiBuilder.Draw -= this.windowSystem.Draw;
+            this.pluginInterface.UiBuilder.Draw -= SoundController.Update;
+            this.windowSystem.RemoveAllWindows();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+    }
+}
