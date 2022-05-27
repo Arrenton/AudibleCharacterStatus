@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using Dalamud.Utility;
@@ -12,6 +13,8 @@ namespace AudibleCharacterStatus
         public static void PlaySound(string path, float volume = 1.0f)
         {
             if (path.IsNullOrEmpty() || !File.Exists(path)) return;
+
+            if (Process.GetCurrentProcess().Id != ProcessUtils.GetForegroundProcessId() && !Service.Config.PlayInBackground) return;
 
             var soundDevice = Service.Config.SoundDeviceId;
             if (soundDevice < -1 || soundDevice > WaveOut.DeviceCount)

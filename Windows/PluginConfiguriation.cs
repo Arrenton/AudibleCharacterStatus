@@ -57,8 +57,21 @@ namespace AudibleCharacterStatus.Windows
                 ImGui.EndCombo();
             }
 
+            var playInBackground = Service.Config.PlayInBackground;
+            if (ImGui.Checkbox("Play Sound in Background##General", ref playInBackground))
+            {
+                Service.Config.PlayInBackground = playInBackground;
+            }
+            if (ImGui.IsItemHovered())
+            {
+                Tooltip("Allows the sound from this plugin to play when the game is in the background.");
+            }
+            ImGui.NewLine();
+
             LowHpSettings();
             LowMpSettings();
+
+            ImGui.NewLine();
 
             ImGui.Separator();
             if (ImGui.Button("Save"))
@@ -194,7 +207,7 @@ namespace AudibleCharacterStatus.Windows
 
             string[] supportedImages = { ".wav", ".mp3", ".ogg" };
 
-            var isImage = supportedImages.Any(ext => Path.GetExtension(path) == ext);
+            var isImage = supportedImages.Any(ext => Path.GetExtension(path).Trim() == ext);
 
             return isImage ? "" : "File is not supported. Use MP3, OGG, or WAV.";
         }

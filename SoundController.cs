@@ -20,7 +20,6 @@ namespace AudibleCharacterStatus
         {
             var localPlayer = Service.ClientState.LocalPlayer;
             if (localPlayer is null) return;
-            if (Process.GetCurrentProcess().Id != ProcessUtils.GetForegroundProcessId()) return;
 
             if (!Service.Config.LowHealthSoundEnabled) return;
 

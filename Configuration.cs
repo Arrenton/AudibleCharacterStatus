@@ -10,6 +10,7 @@ namespace AudibleCharacterStatus
         #region Saved configuration values
 
         public int SoundDeviceId { get; set; } = -1;
+        public bool PlayInBackground { get; set; } = false;
 
         #region Low HP
 
