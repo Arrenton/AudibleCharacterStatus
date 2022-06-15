@@ -3,7 +3,7 @@ using Dalamud.Game.ClientState;
 
 namespace AudibleCharacterStatus
 {
-    class Service
+    internal static class Service
     {
         internal static ClientState ClientState;
         internal static Framework Framework;

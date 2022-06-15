@@ -34,16 +34,16 @@ namespace AudibleCharacterStatus
 
         #endregion
 
-        private readonly DalamudPluginInterface pluginInterface;
+        private DalamudPluginInterface _pluginInterface;
 
-        public Configuration(DalamudPluginInterface pi)
+        public void Initialize(DalamudPluginInterface pi)
         {
-            this.pluginInterface = pi;
+            this._pluginInterface = pi;
         }
 
         public void Save()
         {
-            this.pluginInterface.SavePluginConfig(this);
+            this._pluginInterface.SavePluginConfig(this);
         }
     }
 }

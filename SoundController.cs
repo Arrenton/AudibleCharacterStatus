@@ -43,12 +43,14 @@ namespace AudibleCharacterStatus
 
             if (!Service.Config.LowMagicSoundEnabled) return;
 
-            if (_lowMagicSoundTime is <= 0 and > -100 && localPlayer.CurrentMp <= localPlayer.MaxMp * (Service.Config.LowMagicPercent / 100f) && localPlayer.CurrentMp > 0)
+            if (localPlayer.MaxMp <= 0) return;
+
+            if (_lowMagicSoundTime is <= 0 and > -100 && localPlayer.CurrentMp <= localPlayer.MaxMp * (Service.Config.LowMagicPercent / 100f) && localPlayer.CurrentHp > 0)
             {
                 SoundEngine.PlaySound(Service.Config.LowMagicSoundPath, Service.Config.LowMagicSoundVolume);
                 _lowMagicSoundTime += Service.Config.LowMagicSoundDelay;
             }
-            else if (localPlayer.CurrentMp > localPlayer.MaxMp * (Service.Config.LowMagicPercent / 100f) || localPlayer.CurrentMp == 0 ||
+            else if (localPlayer.CurrentMp > localPlayer.MaxMp * (Service.Config.LowMagicPercent / 100f) || localPlayer.CurrentHp == 0 ||
                      _lowMagicSoundTime == -100 && Service.Config.LowMagicSoundDelay != -100)
             {
                 _lowMagicSoundTime = 0;

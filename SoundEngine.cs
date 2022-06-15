@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Dalamud.Utility;
+using NAudio.Wave;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using Dalamud.Utility;
-using NAudio.Wave;
 
 namespace AudibleCharacterStatus
 {

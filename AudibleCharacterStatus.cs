@@ -30,8 +30,8 @@ namespace AudibleCharacterStatus
             
 
             // Get or create a configuration object
-            Service.Config = (Configuration)this.pluginInterface.GetPluginConfig()
-                          ?? this.pluginInterface.Create<Configuration>();
+            Service.Config = (Configuration)this.pluginInterface.GetPluginConfig() ?? new Configuration();
+            Service.Config.Initialize(pi);
 
             // Initialize the UI
             this.windowSystem = new WindowSystem(typeof(AudibleCharacterStatus).AssemblyQualifiedName);
