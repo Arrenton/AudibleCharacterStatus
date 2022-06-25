@@ -4,6 +4,6 @@
   "Description": "Plays a sound for certain statuses of the player. Such as low HP or MP.\nYou will need to provide your own sound files.",
   "RepoUrl": "https://github.com/Arrenton/AudibleCharacterStatus",
   "Punchline": "You like annoying low HP sounds? This is great for you!",
-  "Changelog": "Fixed save crash.\nFixed MP sound from playing as a crafting class, which has no MP.",
+  "Changelog": "Added a file picker for loading sound files.",
   "Tags": [ "audio", "player", "status" ]
 }

@@ -3,19 +3,24 @@ using Dalamud.Utility;
 using ImGuiNET;
 using NAudio.Wave;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using Dalamud.Interface.ImGuiFileDialog;
 
 namespace AudibleCharacterStatus.Windows
 {
     public class PluginConfiguriation : Window
     {
+        private readonly FileDialogManager _dialogManager;
+
         // Methods
         public PluginConfiguriation() : base("Audible Character Status Configuration")
         {
+            _dialogManager = SetupDialogManager();
             IsOpen = false;
-            Size = new Vector2(810, 520);
+            Size = new(810, 520);
             SizeCondition = ImGuiCond.FirstUseEver;
         }
 
@@ -71,6 +76,8 @@ namespace AudibleCharacterStatus.Windows
             LowHpSettings();
             LowMpSettings();
 
+            _dialogManager.Draw();
+
             ImGui.NewLine();
 
             ImGui.Separator();
@@ -92,9 +99,24 @@ namespace AudibleCharacterStatus.Windows
 
             var lowHealthSoundPath = Service.Config.LowHealthSoundPath;
             ImGui.Text("Sound File Path");
-            if (ImGui.InputText("##LowHpPath", ref lowHealthSoundPath, 512))
+
+            ImGui.InputText("##LowHpPath", ref lowHealthSoundPath, 512, ImGuiInputTextFlags.ReadOnly);
+
+            ImGui.SameLine();
+            if (ImGui.Button("Browse...##LowHpPath"))
             {
-                Service.Config.LowHealthSoundPath = lowHealthSoundPath;
+                var startDir = Path.GetDirectoryName(Service.Config.LowHealthSoundPath);
+
+                void UpdatePath(bool success, List<string> paths)
+                {
+                    if (success && paths.Count > 0)
+                    {
+                        Service.Config.LowHealthSoundPath = paths[0];
+                    }
+                }
+
+                _dialogManager.OpenFileDialog("Choose an audio file for Low HP", "Audio Files{.wav,.mp3,.ogg}", UpdatePath, 1, startDir);
+
             }
 
             ImGui.SameLine();
@@ -143,9 +165,24 @@ namespace AudibleCharacterStatus.Windows
 
             var lowMagicSoundPath = Service.Config.LowMagicSoundPath;
             ImGui.Text("Sound File Path");
-            if (ImGui.InputText("##LowMpPath", ref lowMagicSoundPath, 512))
+
+            ImGui.InputText("##LowMpPath", ref lowMagicSoundPath, 512, ImGuiInputTextFlags.ReadOnly);
+
+            ImGui.SameLine();
+            if (ImGui.Button("Browse...##LowMpPath"))
             {
-                Service.Config.LowMagicSoundPath = lowMagicSoundPath;
+                var startDir = Path.GetDirectoryName(Service.Config.LowMagicSoundPath);
+
+                void UpdatePath(bool success, List<string> paths)
+                {
+                    if (success && paths.Count > 0)
+                    {
+                        Service.Config.LowMagicSoundPath = paths[0];
+                    }
+                }
+
+                _dialogManager.OpenFileDialog("Choose an audio file for Low MP", "Audio Files{.wav,.mp3,.ogg}", UpdatePath, 1, startDir);
+
             }
 
             ImGui.SameLine();
@@ -210,6 +247,16 @@ namespace AudibleCharacterStatus.Windows
             var isImage = supportedImages.Any(ext => Path.GetExtension(path).Trim() == ext);
 
             return isImage ? "" : "File is not supported. Use MP3, OGG, or WAV.";
+        }
+
+        private FileDialogManager SetupDialogManager()
+        {
+            var fileManager = new FileDialogManager { AddedWindowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoDocking };
+
+            // Remove Videos and Music.
+            fileManager.CustomSideBarItems.Add(("Videos", string.Empty, 0, -1));
+
+            return fileManager;
         }
     }
 }
