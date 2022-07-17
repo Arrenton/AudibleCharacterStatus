@@ -115,7 +115,7 @@ namespace AudibleCharacterStatus.Windows
                     }
                 }
 
-                _dialogManager.OpenFileDialog("Choose an audio file for Low HP", "Audio Files{.wav,.mp3,.ogg}", UpdatePath, 1, startDir);
+                _dialogManager.OpenFileDialog("Choose an audio file for Low HP", "Audio Files{.wav,.mp3}", UpdatePath, 1, startDir);
 
             }
 
@@ -181,7 +181,7 @@ namespace AudibleCharacterStatus.Windows
                     }
                 }
 
-                _dialogManager.OpenFileDialog("Choose an audio file for Low MP", "Audio Files{.wav,.mp3,.ogg}", UpdatePath, 1, startDir);
+                _dialogManager.OpenFileDialog("Choose an audio file for Low MP", "Audio Files{.wav,.mp3}", UpdatePath, 1, startDir);
 
             }
 
@@ -242,11 +242,11 @@ namespace AudibleCharacterStatus.Windows
 
             if (!fileFound) return "File not found.";
 
-            string[] supportedImages = { ".wav", ".mp3", ".ogg" };
+            string[] supportedImages = { ".wav", ".mp3" };
 
             var isImage = supportedImages.Any(ext => Path.GetExtension(path).Trim() == ext);
 
-            return isImage ? "" : "File is not supported. Use MP3, OGG, or WAV.";
+            return isImage ? "" : "File is not supported. Use MP3, or WAV.";
         }
 
         private FileDialogManager SetupDialogManager()
