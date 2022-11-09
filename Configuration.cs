@@ -11,6 +11,7 @@ namespace AudibleCharacterStatus
 
         public int SoundDeviceId { get; set; } = -1;
         public bool PlayInBackground { get; set; } = false;
+        public bool ToggleCombat { get; set; } = false;
 
         #region Low HP
 
