@@ -2,6 +2,7 @@
 using AudibleCharacterStatus.Windows;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
@@ -22,12 +23,13 @@ namespace AudibleCharacterStatus
             DalamudPluginInterface pi,
             CommandManager commands,
             Framework framework,
-            ClientState clientState)
+            ClientState clientState,
+            Condition condition)
         {
             this.pluginInterface = pi;
             Service.ClientState = clientState;
             Service.Framework = framework;
-            
+            Service.Condition = condition;
 
             // Get or create a configuration object
             Service.Config = (Configuration)this.pluginInterface.GetPluginConfig() ?? new Configuration();

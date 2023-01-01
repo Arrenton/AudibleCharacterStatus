@@ -71,7 +71,18 @@ namespace AudibleCharacterStatus.Windows
             {
                 Tooltip("Allows the sound from this plugin to play when the game is in the background.");
             }
+
+            var toggleCombat = Service.Config.ToggleCombat;
+            if (ImGui.Checkbox("Enable Sound Outside of Combat", ref toggleCombat))
+            {
+                Service.Config.ToggleCombat = toggleCombat;
+            }
+            if (ImGui.IsItemHovered())
+            {
+                Tooltip("Enable to make sounds play even while not in combat.");
+            }
             ImGui.NewLine();
+
 
             LowHpSettings();
             LowMpSettings();

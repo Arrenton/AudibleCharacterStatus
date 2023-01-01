@@ -1,4 +1,7 @@
 ﻿using System.Diagnostics;
+using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Logging;
 
 namespace AudibleCharacterStatus
 {
@@ -23,6 +26,10 @@ namespace AudibleCharacterStatus
 
             if (!Service.Config.LowHealthSoundEnabled) return;
 
+            //Do not allow sound if ToggleCombat is disabled, and the player is not in combat
+            if (!Service.Config.ToggleCombat && !Service.Condition[ConditionFlag.InCombat])  return;    
+            
+
             if (_lowHealthSoundTime is <= 0 and > -100 && localPlayer.CurrentHp <= localPlayer.MaxHp * (Service.Config.LowHealthPercent / 100f) && localPlayer.CurrentHp > 0)
             {
                 SoundEngine.PlaySound(Service.Config.LowHealthSoundPath, Service.Config.LowHealthSoundVolume);
@@ -42,6 +49,9 @@ namespace AudibleCharacterStatus
             if (Process.GetCurrentProcess().Id != ProcessUtils.GetForegroundProcessId()) return;
 
             if (!Service.Config.LowMagicSoundEnabled) return;
+
+            //Do not allow sound if ToggleCombat is disabled, and the player is not in combat
+            if (!Service.Config.ToggleCombat && !Service.Condition[ConditionFlag.InCombat]) return;
 
             if (localPlayer.MaxMp <= 0) return;
 
