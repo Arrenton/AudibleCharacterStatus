@@ -33,10 +33,12 @@ namespace AudibleCharacterStatus
                     Dalamud.Logging.PluginLog.Error($"Could not play sound file: {e.Message}");
                     return;
                 }
-                
+
+                volume = Math.Max(0, Math.Min(volume, 1));
+
                 using WaveChannel32 channel = new(reader)
                 {
-                    Volume = volume,
+                    Volume = 1 - (float)Math.Sqrt(1 - (volume * volume)),
                     PadWithZeroes = false,
                 };
 
