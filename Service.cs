@@ -1,14 +1,15 @@
 ﻿using Dalamud.Game;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Plugin.Services;
 
 namespace AudibleCharacterStatus
 {
     internal static class Service
     {
-        internal static ClientState ClientState;
-        internal static Framework Framework;
+        internal static IClientState ClientState;
+        internal static IFramework Framework;
         internal static Configuration Config;
-        internal static Condition Condition;
+        internal static ICondition Condition;
     }
 }
