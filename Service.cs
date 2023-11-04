@@ -11,5 +11,6 @@ namespace AudibleCharacterStatus
         internal static IFramework Framework;
         internal static Configuration Config;
         internal static ICondition Condition;
+        internal static IPluginLog PluginLog;
     }
 }

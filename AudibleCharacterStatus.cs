@@ -23,12 +23,14 @@ namespace AudibleCharacterStatus
             ICommandManager commands,
             IFramework framework,
             IClientState clientState,
-            ICondition condition)
+            ICondition condition,
+            IPluginLog pluginLog)
         {
             this.pluginInterface = pi;
             Service.ClientState = clientState;
             Service.Framework = framework;
             Service.Condition = condition;
+            Service.PluginLog = pluginLog;
 
             // Get or create a configuration object
             Service.Config = (Configuration)this.pluginInterface.GetPluginConfig() ?? new Configuration();

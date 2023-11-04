@@ -30,7 +30,7 @@ namespace AudibleCharacterStatus
                 }
                 catch (Exception e)
                 {
-                    Dalamud.Logging.PluginLog.Error($"Could not play sound file: {e.Message}");
+                    Service.PluginLog.Error($"Could not play sound file: {e.Message}");
                     return;
                 }
 
