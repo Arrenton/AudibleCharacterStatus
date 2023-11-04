@@ -1,12 +1,11 @@
 ﻿using AudibleCharacterStatus.Attributes;
 using AudibleCharacterStatus.Windows;
-using Dalamud.Game;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using System;
+using System.Linq;
+using Dalamud.Plugin.Services;
+using ImGuiNET;
 
 namespace AudibleCharacterStatus
 {
@@ -21,10 +20,10 @@ namespace AudibleCharacterStatus
 
         public AudibleCharacterStatus(
             DalamudPluginInterface pi,
-            CommandManager commands,
-            Framework framework,
-            ClientState clientState,
-            Condition condition)
+            ICommandManager commands,
+            IFramework framework,
+            IClientState clientState,
+            ICondition condition)
         {
             this.pluginInterface = pi;
             Service.ClientState = clientState;
@@ -61,7 +60,9 @@ namespace AudibleCharacterStatus
 
         private void ToggleConfigWindow()
         {
-            var configWindow = this.windowSystem.GetWindow("Audible Character Status Configuration");
+            //var configWindow = this.windowSystem.GetWindow("Audible Character Status Configuration");
+            var configWindow = this.windowSystem.Windows.FirstOrDefault(x => x.WindowName == "Audible Character Status Configuration");
+            
             configWindow.IsOpen = !configWindow.IsOpen;
         }
 
