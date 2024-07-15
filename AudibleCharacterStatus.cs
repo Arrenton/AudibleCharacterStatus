@@ -11,7 +11,7 @@ namespace AudibleCharacterStatus
 {
     public class AudibleCharacterStatus : IDalamudPlugin
     {
-        private readonly DalamudPluginInterface pluginInterface;
+        private readonly IDalamudPluginInterface pluginInterface;
 
         private readonly PluginCommandManager<AudibleCharacterStatus> commandManager;
         private readonly WindowSystem windowSystem;
@@ -19,7 +19,7 @@ namespace AudibleCharacterStatus
         public string Name => "Audible Character Status";
 
         public AudibleCharacterStatus(
-            DalamudPluginInterface pi,
+            IDalamudPluginInterface pi,
             ICommandManager commands,
             IFramework framework,
             IClientState clientState,
