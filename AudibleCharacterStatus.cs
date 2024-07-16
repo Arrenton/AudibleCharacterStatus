@@ -11,7 +11,7 @@ namespace AudibleCharacterStatus
 {
     public class AudibleCharacterStatus : IDalamudPlugin
     {
-        private readonly DalamudPluginInterface pluginInterface;
+        private readonly IDalamudPluginInterface pluginInterface;
 
         private readonly PluginCommandManager<AudibleCharacterStatus> commandManager;
         private readonly WindowSystem windowSystem;
@@ -19,7 +19,7 @@ namespace AudibleCharacterStatus
         public string Name => "Audible Character Status";
 
         public AudibleCharacterStatus(
-            DalamudPluginInterface pi,
+            IDalamudPluginInterface pi,
             ICommandManager commands,
             IFramework framework,
             IClientState clientState,
@@ -44,8 +44,9 @@ namespace AudibleCharacterStatus
             {
                 this.windowSystem.AddWindow(window);
             }
-            
+
             this.pluginInterface.UiBuilder.OpenConfigUi += ToggleConfigWindow;
+            this.pluginInterface.UiBuilder.OpenMainUi += ToggleConfigWindow;
             this.pluginInterface.UiBuilder.Draw += this.windowSystem.Draw;
             this.pluginInterface.UiBuilder.Draw += SoundController.Update;
 
@@ -77,6 +78,8 @@ namespace AudibleCharacterStatus
 
             this.pluginInterface.SavePluginConfig(Service.Config);
 
+            this.pluginInterface.UiBuilder.OpenConfigUi -= ToggleConfigWindow;
+            this.pluginInterface.UiBuilder.OpenMainUi -= ToggleConfigWindow;
             this.pluginInterface.UiBuilder.Draw -= this.windowSystem.Draw;
             this.pluginInterface.UiBuilder.Draw -= SoundController.Update;
             this.windowSystem.RemoveAllWindows();
