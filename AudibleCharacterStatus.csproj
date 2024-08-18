@@ -6,7 +6,6 @@
 		<Version>1.0.1.5</Version>
 		    <Platforms>x64</Platforms>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-		<EnableWindowsTargeting>true</EnableWindowsTargeting>
 	</PropertyGroup>
 
 
