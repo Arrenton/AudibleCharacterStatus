@@ -8,12 +8,17 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Interface.ImGuiFileDialog;
+using System.Timers;
 
 namespace AudibleCharacterStatus.Windows
 {
     public class PluginConfiguriation : Window
     {
         private readonly FileDialogManager _dialogManager;
+        private string _lowHealthFileMessage = "";
+        private Timer _lowHealthMessageTimer;
+        private string _lowMagicFileMessage = "";
+        private Timer _lowMagicMessageTimer;
 
         // Methods
         public PluginConfiguriation() : base("Audible Character Status Configuration")
@@ -22,11 +27,27 @@ namespace AudibleCharacterStatus.Windows
             IsOpen = false;
             Size = new(810, 520);
             SizeCondition = ImGuiCond.FirstUseEver;
+            _lowHealthMessageTimer = new Timer();
+            _lowHealthMessageTimer.Interval = 10000;
+            _lowHealthMessageTimer.Elapsed += LowHealthMessageTimer_Elapsed;
+            _lowMagicMessageTimer = new Timer();
+            _lowMagicMessageTimer.Interval = 10000;
+            _lowMagicMessageTimer.Elapsed += LowMagicMessageTimer_Elapsed;
+        }
+
+        private void LowHealthMessageTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            _lowHealthFileMessage = "";
+        }
+
+        private void LowMagicMessageTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            _lowMagicFileMessage = "";
         }
 
         public override void Draw()
         {
-            var deviceId = Service.Config.SoundDeviceId;
+            /*var deviceId = Service.Config.SoundDeviceId;
             var deviceName = "Default";
             if (deviceId > -1)
             {
@@ -60,7 +81,7 @@ namespace AudibleCharacterStatus.Windows
                 }
 
                 ImGui.EndCombo();
-            }
+            }*/
 
             var playInBackground = Service.Config.PlayInBackground;
             if (ImGui.Checkbox("Play Sound in Background##General", ref playInBackground))
@@ -109,7 +130,14 @@ namespace AudibleCharacterStatus.Windows
             }
 
             var lowHealthSoundPath = Service.Config.LowHealthSoundPath;
+            ImGui.NewLine();
             ImGui.Text("Sound File Path");
+
+            if (_lowHealthFileMessage != "" && _lowHealthFileMessage != "Pass")
+            {
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(1, 0, 0, 1), _lowHealthFileMessage);
+            }
 
             ImGui.InputText("##LowHpPath", ref lowHealthSoundPath, 512, ImGuiInputTextFlags.ReadOnly);
 
@@ -126,14 +154,16 @@ namespace AudibleCharacterStatus.Windows
                     }
                 }
 
-                _dialogManager.OpenFileDialog("Choose an audio file for Low HP", "Audio Files{.wav,.mp3}", UpdatePath, 1, startDir);
+                _dialogManager.OpenFileDialog("Choose an audio file for Low HP", "Audio Files{.wav,.mp3,.ogg}", UpdatePath, 1, startDir);
 
             }
 
             ImGui.SameLine();
             if (ImGui.Button("Test##LowHpPath"))
             {
-                SoundEngine.PlaySound(Service.Config.LowHealthSoundPath, Service.Config.LowHealthSoundVolume);
+                _lowHealthFileMessage = SoundEngine.PlaySound(Service.Config.LowHealthSoundPath, Service.Config.LowHealthSoundVolume, true);
+                _lowHealthMessageTimer.Stop();
+                _lowHealthMessageTimer.Start();
             }
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(1, 0, 0, 1), FindSoundMessage(Service.Config.LowHealthSoundPath));
@@ -177,6 +207,12 @@ namespace AudibleCharacterStatus.Windows
             var lowMagicSoundPath = Service.Config.LowMagicSoundPath;
             ImGui.Text("Sound File Path");
 
+            if (_lowMagicFileMessage != "" && _lowMagicFileMessage != "Pass")
+            {
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(1, 0, 0, 1), _lowMagicFileMessage);
+            }
+
             ImGui.InputText("##LowMpPath", ref lowMagicSoundPath, 512, ImGuiInputTextFlags.ReadOnly);
 
             ImGui.SameLine();
@@ -199,7 +235,9 @@ namespace AudibleCharacterStatus.Windows
             ImGui.SameLine();
             if (ImGui.Button("Test##LowMpPath"))
             {
-                SoundEngine.PlaySound(Service.Config.LowMagicSoundPath, Service.Config.LowMagicSoundVolume);
+                _lowMagicFileMessage = SoundEngine.PlaySound(Service.Config.LowMagicSoundPath, Service.Config.LowMagicSoundVolume, true);
+                _lowMagicMessageTimer.Stop();
+                _lowMagicMessageTimer.Start();
             }
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(1, 0, 0, 1), FindSoundMessage(Service.Config.LowMagicSoundPath));
@@ -253,11 +291,11 @@ namespace AudibleCharacterStatus.Windows
 
             if (!fileFound) return "File not found.";
 
-            string[] supportedImages = { ".wav", ".mp3" };
+            string[] supportedImages = { ".wav", ".mp3", ".ogg" };
 
             var isImage = supportedImages.Any(ext => Path.GetExtension(path).Trim() == ext);
 
-            return isImage ? "" : "File is not supported. Use MP3, or WAV.";
+            return isImage ? "" : "File is not supported. Use MP3, WAV, or OGG.";
         }
 
         private FileDialogManager SetupDialogManager()

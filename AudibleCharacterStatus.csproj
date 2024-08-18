@@ -29,15 +29,20 @@
   </PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="NAudio" Version="2.2.1" />
-	</ItemGroup>
-	
-	<PropertyGroup>
-		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-	</PropertyGroup>
+    <PackageReference Include="DalamudPackager" Version="2.1.13" />
+    <PackageReference Include="NAudio.Core" Version="2.2.1" />
+    <PackageReference Include="NAudio.Vorbis" Version="1.5.0" />
+    <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
+    <PackageReference Include="NAudio.WinMM" Version="2.2.1" />
+    <PackageReference Include="NLayer" Version=" 1.15.0" />
+    <PackageReference Include="NLayer.NAudioSupport" Version=" 1.4.0" />
+  </ItemGroup>
 
-    <ItemGroup>
-	    <PackageReference Include="DalamudPackager" Version="2.1.13" />
+  <PropertyGroup>
+    <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
+  </PropertyGroup>
+
+  <ItemGroup>
 	    <Reference Include="FFXIVClientStructs">
 		    <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
 		    <Private>false</Private>
