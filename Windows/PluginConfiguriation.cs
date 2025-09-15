@@ -1,7 +1,6 @@
 ﻿using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
 using Dalamud.Bindings.ImGui;
-using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.IO;

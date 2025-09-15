@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
-using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Logging;
 
 namespace AudibleCharacterStatus
 {

@@ -2,7 +2,6 @@
 using NAudio.Vorbis;
 using NAudio.Wave;
 using NLayer.NAudioSupport;
-using NVorbis;
 using System;
 using System.Diagnostics;
 using System.IO;

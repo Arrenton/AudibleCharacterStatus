@@ -1,7 +1,4 @@
-﻿using Dalamud.Game;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Plugin.Services;
+﻿using Dalamud.Plugin.Services;
 
 namespace AudibleCharacterStatus
 {

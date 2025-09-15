@@ -5,7 +5,6 @@ using Dalamud.Plugin;
 using System;
 using System.Linq;
 using Dalamud.Plugin.Services;
-using Dalamud.Bindings.ImGui;
 
 namespace AudibleCharacterStatus
 {

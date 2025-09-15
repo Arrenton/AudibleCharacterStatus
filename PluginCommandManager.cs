@@ -5,7 +5,6 @@ using System.Reflection;
 using AudibleCharacterStatus.Attributes;
 using Dalamud.Game.Command;
 using Dalamud.Plugin.Services;
-using static Dalamud.Game.Command.CommandInfo;
 
 namespace AudibleCharacterStatus
 {
