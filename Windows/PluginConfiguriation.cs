@@ -34,12 +34,12 @@ namespace AudibleCharacterStatus.Windows
             _lowMagicMessageTimer.Elapsed += LowMagicMessageTimer_Elapsed;
         }
 
-        private void LowHealthMessageTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void LowHealthMessageTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             _lowHealthFileMessage = "";
         }
 
-        private void LowMagicMessageTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void LowMagicMessageTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             _lowMagicFileMessage = "";
         }
@@ -82,7 +82,7 @@ namespace AudibleCharacterStatus.Windows
                 ImGui.EndCombo();
             }*/
 
-            var playInBackground = Service.Config.PlayInBackground;
+            var playInBackground = Service.Config!.PlayInBackground;
             if (ImGui.Checkbox("Play Sound in Background##General", ref playInBackground))
             {
                 Service.Config.PlayInBackground = playInBackground;
@@ -122,7 +122,7 @@ namespace AudibleCharacterStatus.Windows
             if (!ImGui.TreeNode("Low HP")) return;
 
             ImGui.Text("Plays a sound when HP is low, based on the set percentage.");
-            var enabled = Service.Config.LowHealthSoundEnabled;
+            var enabled = Service.Config!.LowHealthSoundEnabled;
             if (ImGui.Checkbox("Enabled##LowHpSound", ref enabled))
             {
                 Service.Config.LowHealthSoundEnabled = enabled;
@@ -149,7 +149,7 @@ namespace AudibleCharacterStatus.Windows
                 {
                     if (success && paths.Count > 0)
                     {
-                        Service.Config.LowHealthSoundPath = paths[0];
+                        Service.Config!.LowHealthSoundPath = paths[0];
                     }
                 }
 
@@ -197,7 +197,7 @@ namespace AudibleCharacterStatus.Windows
             if (!ImGui.TreeNode("Low MP")) return;
 
             ImGui.Text("Plays a sound when MP is low, based on the set percentage.");
-            var enabled = Service.Config.LowMagicSoundEnabled;
+            var enabled = Service.Config!.LowMagicSoundEnabled;
             if (ImGui.Checkbox("Enabled##LowMpSound", ref enabled))
             {
                 Service.Config.LowMagicSoundEnabled = enabled;
@@ -223,7 +223,7 @@ namespace AudibleCharacterStatus.Windows
                 {
                     if (success && paths.Count > 0)
                     {
-                        Service.Config.LowMagicSoundPath = paths[0];
+                        Service.Config!.LowMagicSoundPath = paths[0];
                     }
                 }
 

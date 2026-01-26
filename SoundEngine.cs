@@ -20,9 +20,11 @@ namespace AudibleCharacterStatus
 
             string fileType = Path.GetExtension(path);
             if (fileType != ".mp3" && fileType != ".wav" && fileType != ".ogg") {
-                Service.PluginLog.Debug($"Bad file type: {fileType}");
+                Service.PluginLog?.Debug($"Bad file type: {fileType}");
                 return "Unsupported File Type"; 
             }
+
+            if (Service.Config is null) return "Config uninitialized. Something went horribly wrong, please report.";
 
             if (Process.GetCurrentProcess().Id != ProcessUtils.GetForegroundProcessId() && !Service.Config.PlayInBackground) return "Pass";
 
@@ -33,7 +35,7 @@ namespace AudibleCharacterStatus
             }*/
 
             new Thread(() => {
-                WaveStream reader = null;
+                WaveStream? reader = null;
                 try
                 {
                     if (fileType == ".mp3")
@@ -51,7 +53,7 @@ namespace AudibleCharacterStatus
                 }
                 catch (Exception e)
                 {
-                    Service.PluginLog.Error($"Could not play sound file: {e.Message}");
+                    Service.PluginLog?.Error($"Could not play sound file: {e.Message}");
                     message = "Error reading file. Check the log.";
                     return;
                 }
@@ -60,7 +62,7 @@ namespace AudibleCharacterStatus
 
                 volume = Math.Max(0, Math.Min(volume, 1));
 
-                WaveChannel32 channel = null;
+                WaveChannel32? channel = null;
 
                 try
                 {
@@ -72,7 +74,7 @@ namespace AudibleCharacterStatus
                 }
                 catch (Exception e)
                 {
-                    Service.PluginLog.Error($"Could not play sound file: {e.Message}");
+                    Service.PluginLog?.Error($"Could not play sound file: {e.Message}");
                     message = "Error reading file.  Check the log.";
                     return;
                 }

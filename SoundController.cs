@@ -19,8 +19,10 @@ namespace AudibleCharacterStatus
 
         private static void LowHpTimer()
         {
-            var localPlayer = Service.ClientState.LocalPlayer;
+            var localPlayer = Service.ObjectTable?.LocalPlayer;
             if (localPlayer is null) return;
+            if (Service.Config is null) return;
+            if (Service.Condition is null) return;
 
             if (!Service.Config.LowHealthSoundEnabled) return;
 
@@ -42,10 +44,11 @@ namespace AudibleCharacterStatus
 
         private static void LowMpTimer()
         {
-            var localPlayer = Service.ClientState.LocalPlayer;
+            var localPlayer = Service.ObjectTable?.LocalPlayer;
             if (localPlayer is null) return;
             if (Process.GetCurrentProcess().Id != ProcessUtils.GetForegroundProcessId()) return;
-
+            if (Service.Config is null) return;
+            if (Service.Condition is null) return;
             if (!Service.Config.LowMagicSoundEnabled) return;
 
             //Do not allow sound if ToggleCombat is disabled, and the player is not in combat
@@ -67,6 +70,8 @@ namespace AudibleCharacterStatus
 
         private static void UpdateTimers()
         {
+            if (Service.Framework is null) return;
+
             if (_lowHealthSoundTime > 0)
             {
                 _lowHealthSoundTime -= Service.Framework.UpdateDelta.Ticks / 10000000f;

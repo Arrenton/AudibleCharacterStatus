@@ -22,17 +22,19 @@ namespace AudibleCharacterStatus
             ICommandManager commands,
             IFramework framework,
             IClientState clientState,
+            IObjectTable objectTable,
             ICondition condition,
             IPluginLog pluginLog)
         {
             this.pluginInterface = pi;
             Service.ClientState = clientState;
+            Service.ObjectTable = objectTable;
             Service.Framework = framework;
             Service.Condition = condition;
             Service.PluginLog = pluginLog;
 
             // Get or create a configuration object
-            Service.Config = (Configuration)this.pluginInterface.GetPluginConfig() ?? new Configuration();
+            Service.Config = this.pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             Service.Config.Initialize(pi);
 
             // Initialize the UI
@@ -64,7 +66,8 @@ namespace AudibleCharacterStatus
         {
             //var configWindow = this.windowSystem.GetWindow("Audible Character Status Configuration");
             var configWindow = this.windowSystem.Windows.FirstOrDefault(x => x.WindowName == "Audible Character Status Configuration");
-            
+            if (configWindow is null) return;
+
             configWindow.IsOpen = !configWindow.IsOpen;
         }
 

@@ -35,7 +35,7 @@ namespace AudibleCharacterStatus
 
         #endregion
 
-        private IDalamudPluginInterface _pluginInterface;
+        private IDalamudPluginInterface? _pluginInterface;
 
         public void Initialize(IDalamudPluginInterface pi)
         {
@@ -44,7 +44,7 @@ namespace AudibleCharacterStatus
 
         public void Save()
         {
-            this._pluginInterface.SavePluginConfig(this);
+            this._pluginInterface?.SavePluginConfig(this);
         }
     }
 }
